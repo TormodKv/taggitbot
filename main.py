@@ -41,11 +41,12 @@ def cleanup_audio(userId):
 
         oldExt = data[userId]["oldExt"]
 
-        os.remove(f'./audio/{data[userId]["fileName"]}.{oldExt}')
-        if oldExt != "mp3":
+        try:
+            os.remove(f'./audio/{data[userId]["fileName"]}.{oldExt}')
             os.remove(f'./audio/{data[userId]["fileName"]}.mp3')
+        except:
+            return
 
-        return
 
 def cleanup_users():
     filename = "./users.json"
@@ -186,8 +187,7 @@ def json_clear_user(userId):
     with open(filename, 'w') as f:
         json.dump(data, f)
 
-
-updater = Updater('YOUR_KEY_HERE')
+updater = Updater('YOUR KEY HERE')
 dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('help', help_handler))
