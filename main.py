@@ -80,6 +80,9 @@ def general_audio_handler(update: Update, context: CallbackContext, fileId, oldE
     oldFileName = ""
     for i in range(len(oldExt)-1):
         oldFileName += oldExt[i]
+        oldFileName += "."
+
+    oldFileName = oldFileName.removesuffix(".")
 
     oldExt = oldExt[len(oldExt) - 1]
 
@@ -107,10 +110,14 @@ def text_handler(update: Update, context: CallbackContext):
         return
 
     if 'fileName' not in data[uid]:
-        if mes == "!":
+
+        if not mes.__contains__("www.activechristianity.org") or not mes.__contains__("©SSSF"):
+            mes = f"{mes} - www.activechristianity.org"
+
+        if mes == "! - www.activechristianity.org":
             mes = "_"
 
-        if mes == "?":
+        if mes == "? - www.activechristianity.org":
             json_add(uid, "fileName", data[uid]["oldFileName"])
         else:
             json_add(uid, "fileName", mes)
@@ -187,7 +194,7 @@ def json_clear_user(userId):
     with open(filename, 'w') as f:
         json.dump(data, f)
 
-updater = Updater('YOUR KEY HERE')
+updater = Updater('your key here')
 dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('help', help_handler))
